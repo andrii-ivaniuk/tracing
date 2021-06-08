@@ -1,16 +1,11 @@
-# This is a sample Python script.
+from fastapi import FastAPI
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+from app.api.v1.main import api_router
+from app.core.config import settings
+from app.db.database import Base, engine
 
+Base.metadata.create_all(bind=engine)
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f"Hi, {name}")  # Press ⌘F8 to toggle the breakpoint.
+app = FastAPI(title="Try tracing")
 
-
-# Press the green button in the gutter to run the script.
-if __name__ == "__main__":
-    print_hi("PyCharm")
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+app.include_router(api_router, prefix=settings.API_PREFIX)
